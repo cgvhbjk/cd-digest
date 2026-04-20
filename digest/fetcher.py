@@ -34,10 +34,15 @@ def fetch_recent_threads() -> list[dict]:
             ts = datetime.fromisoformat(bumped_at.replace("Z", "+00:00"))
             if ts >= cutoff:
                 found_any_recent = True
+                raw_tags = topic.get("tags") or []
+                tags = [
+                    t["slug"] if isinstance(t, dict) else t
+                    for t in raw_tags
+                ]
                 threads.append({
                     "id": topic["id"],
                     "title": topic["title"],
-                    "tags": topic.get("tags") or [],
+                    "tags": tags,
                     "reply_count": topic.get("reply_count", 0),
                     "like_count": topic.get("like_count", 0),
                     "views": topic.get("views", 0),

@@ -15,12 +15,16 @@ TECH_TAGS = [
     "programming", "electrical", "mechanical",
     "controls", "vision", "swerve",
     "software", "hardware",
+    "autonomous", "cad", "simulation", "onshape",
+    "ctre", "xrp", "dashboard", "robot",
+    "climb", "intake", "drivetrain", "shooter",
 ]
 
 BLOCKED_TAGS = [
     "offseason", "fun", "meme", "media",
     "community", "events", "announcements",
-    "non-technical",
+    "non-technical", "build-blog", "openalliance",
+    "reveal", "joke", "championship", "worlds",
 ]
 
 BLOCKED_KEYWORDS = [
