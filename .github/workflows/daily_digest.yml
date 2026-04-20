@@ -1,0 +1,43 @@
+name: Daily Digest
+
+on:
+  schedule:
+    - cron: "0 13 * * *"  # 9:00 AM ET every day
+  workflow_dispatch:        # allow manual runs from GitHub UI
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Restore cache
+        uses: actions/cache@v4
+        with:
+          path: data/seen_threads.json
+          key: seen-threads-${{ github.run_id }}
+          restore-keys: seen-threads-
+
+      - name: Run digest
+        env:
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+          SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID }}
+          OLLAMA_HOST: ${{ secrets.OLLAMA_HOST }}
+          OLLAMA_MODEL: ${{ secrets.OLLAMA_MODEL }}
+        run: python main.py
+
+      - name: Save cache
+        if: always()
+        uses: actions/cache@v4
+        with:
+          path: data/seen_threads.json
+          key: seen-threads-${{ github.run_id }}
